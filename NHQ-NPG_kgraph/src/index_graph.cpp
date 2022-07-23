@@ -678,7 +678,7 @@ namespace efanna2e
             cnt++;
           }
         }
-        fusion_distance(djk, cnt);
+        fusion_distance(dist, cnt);
 
         tmp.push_back(Neighbor(j, dist, true));
       }
