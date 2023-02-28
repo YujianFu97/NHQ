@@ -1,26 +1,14 @@
-# Navigable Proximity Graph-Driven Native Hybrid Queries with Structured and Unstructured Constraints
+# NHQ: Native Hybrid Query Framework for Vector Similarity Search with Attribute Constraint
 
 ## 1. Introduction
 
-Hybrid query processing aims to identify these objects with similar vectors to query object and satisfying the given attribute constraints [[SIGMOD'20](https://dl.acm.org/doi/abs/10.1145/3318464.3386131), [VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541), [SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550), [KDD'21](https://dl.acm.org/doi/abs/10.1145/3447548.3470811)]; this pressing need is fueled by massive amount of emerging applications such as visual products search [[VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541), [SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550), [Middleware'18](https://dl.acm.org/doi/10.1145/3284028.3284030)], academic expert finding, movie recommendation, etc. Our paper entitled "Navigable Proximity Graph-Driven Native Hybrid Queries with Structured and Unstructured Constraints" provides a Native Hybrid Query (NHQ) solution outperforms the state-of-the-art competitors (10x faster under the same recall) on all experimental datasets.
+Hybrid query processing aims to identify these objects with similar vectors to query object and satisfying the given attribute constraints [[SIGMOD'20](https://dl.acm.org/doi/abs/10.1145/3318464.3386131), [VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541), [SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550), [KDD'21](https://dl.acm.org/doi/abs/10.1145/3447548.3470811)]; this pressing need is fueled by massive amount of emerging applications such as visual products search [[VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541), [SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550), [Middleware'18](https://dl.acm.org/doi/10.1145/3284028.3284030)], academic expert finding, movie recommendation, etc. Our paper entitled "NHQ: Native Hybrid Query Framework for Vector Similarity Search with Attribute Constraint" provides a Native Hybrid Query (NHQ) solution outperforms the state-of-the-art competitors (up to 315x faster under the same recall) on all experimental datasets.
 
 This repo contains the code, dataset, optimal parameters, and other detailed information used for the experiments of our paper.
 
 ## 2. Compared methods
 
-The compared methods include two categories: one is to verify the effectiveness of the proposed Navigable Proximity Graphs (NPGs), i.e., NPG_nsw and NPG_kgraph; the other is to evaluate the proposed NPG-based hybrid query methods working off NHQ framework. 
-
-**PGs**
-
-* *HNSW* ([TPAMI'2018](https://ieeexplore.ieee.org/abstract/document/8594636)) is a hierarchical PG, which is widely used in various fields and produces many optimized versions based on [hardware](https://proceedings.neurips.cc/paper/2020/hash/788d986905533aba051261497ecffcbb-Abstract.html) or [machine learning](https://dl.acm.org/doi/10.1145/3318464.3380600).
-* *NSW* ([IS'2014](https://www.sciencedirect.com/science/article/abs/pii/S0306437913001300)) is the precursor of HNSW, and is a single-layer PG constructed by incrementally inserting data.
-* *KGraph* ([WWW'2011](https://dl.acm.org/doi/abs/10.1145/1963405.1963487)) is an approximate K-nearest neighbor graph quickly built via NN-Descent. It only considers the distance factor when selecting edges.
-* *DPG* ([TKDE'2019](https://ieeexplore.ieee.org/abstract/document/8681160)) maximizes the angle between neighbors on the basis of KGraph to alleviate redundant calculation.
-* *NSG* ([VLDB'2019](http://www.vldb.org/pvldb/vol12/p461-fu.pdf)) ensures that the monotonicity of the search path by approximating the monotonic search network, thereby avoiding detouring.
-* *NSSG* ([TPAMI'2021](https://ieeexplore.ieee.org/abstract/document/9383170)) is similar to DPG, it adjusts the angle between neighbors to adapt to different data characteristics, to achieve an optimal trade-off between detours and shortcuts.
-* *NPG_nsw* and *NPG_kgraph* are two NPGs proposed by our paper.
-
-**Hybrid query methods**
+We compare our hybrid query methods with six existing ones that have been used in many high-tech companies.
 
 * *ADBV* ([VLDB'2020](https://dl.acm.org/doi/10.14778/3415478.3415541)) is a cost-based hybrid query method proposed by Alibaba. It implements PQ and linear scan for vector similarity search, thus forming four sub-plans; and the least cost one is selected for answering a hybrid query.
 * *Milvus* ([SIGMOD'2021](https://dl.acm.org/doi/10.1145/3448016.3457550)) adopts a partition-based approach regarding attribute; it divides the object set through frequently used attributes, and deploys ADBV on each subset.
@@ -32,7 +20,7 @@ The compared methods include two categories: one is to verify the effectiveness 
 
 ## 3. Datasets
 
-Our experiment involves eight publicly available real-world datasets and one in-house dataset. Among them, the eight public datasets are composed of high-dimensional feature vectors extracted from the unstructured information, and they do not originally contain attributes; at this time, they are used for the performance evaluation of PGs. There is no publicly available dataset thus far that contains both structured and unstructured information [[VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541)]. Therefore, we generate corresponding set of attributes for each object in public datasets following [[SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550)]. For example, we add attributes such as <u>*date*</u>, <u>*location*</u>, <u>*size*</u>, etc. to each image on SIFT1M to form an object with a feature vector and a set of attributes. For the in-house dataset, each object in it consisting of high-dimensional vector extracted from paper content as well as three structured attributes, i.e., <u>*affiliation*</u>, <u>*topic*</u>, <u>*publication*</u>. The following table summarizes their main information.
+Our experiment involves nine publicly available real-world datasets and one in-house dataset. Among them, the nine public datasets are composed of high-dimensional feature vectors extracted from the unstructured information, and they do not originally contain attributes; at this time, they are used for the performance evaluation of PGs. There is no publicly available dataset thus far that contains both structured and unstructured information [[VLDB'20](https://dl.acm.org/doi/10.14778/3415478.3415541)]. Therefore, we generate corresponding set of attributes for each object in public datasets following [[SIGMOD'21](https://dl.acm.org/doi/10.1145/3448016.3457550)]. For example, we add attributes such as <u>*date*</u>, <u>*location*</u>, <u>*size*</u>, etc. to each image on SIFT1M to form an object with a feature vector and a set of attributes. For the in-house dataset, each object in it consisting of high-dimensional vector extracted from paper content as well as three structured attributes, i.e., <u>*affiliation*</u>, <u>*topic*</u>, <u>*publication*</u>. The following table summarizes their main information.
 
 |           | object_num | feature-vector_dim | query_num | type        | download(vector)                                             | download (Attributes)       |
 | --------- | -------- | -------- | --------- | ----------- | ------------------------------------------------------------ | ---------------------- |
@@ -45,6 +33,7 @@ Our experiment involves eight publicly available real-world datasets and one in-
 | Enron     | 94987    | 1369     | 200       | Text+Attribute  | [enron.tar.gz](https://drive.google.com/file/d/1TqV43kzuNYgAYXvXTKsAG1-ZKtcaYsmr/view)(51MB) | [enron_attribute.tar.gz](https://drive.google.com/file/d/1tbVjQlUlFS321CxW9_hfqUf4JUiXdmLi/view) |
 | UQ-V      | 1000000  | 256      | 10000     | Video+Attribute | [uqv.tar.gz](https://drive.google.com/file/d/1HIdQSKGh7cfC7TnRvrA2dnkHBNkVHGsF/view?usp=sharing)(800MB) | [uqv_attribute.tar.gz](https://drive.google.com/file/d/1YN6VuLPw_u9cFREXS6jgApYjCTmzmZtv/view) |
 | Paper     | 2029997  | 200      | 10000     | Text+Attribute  | [paper.tar.gz](https://drive.google.com/file/d/1t4b93_1Viuudzd5D3I6_9_9Guwm1vmTn/view)(1.41GB) | [paper_attribute.tar.gz](https://drive.google.com/file/d/1arpB0oZne3tmRCUfTfzQmIfvWVP_kuKY/view) |
+| BIGANN100M     | 100000000  | 128      | 10000     | Image+Attribute  | [bigann100m.tar.gz](https://big-ann-benchmarks.com/)(9.2GB) | [bigann100m_attribute.tar.gz](https://drive.google.com/file/d/1arpB0oZne3tmRCUfTfzQmIfvWVP_kuKY/view) |
 
 Note that, all original objects and query object are converted to `fvecs` format, and groundtruth data is converted to `ivecs` format. Please refer [here](http://yael.gforge.inria.fr/file_format.html) for the description of `fvecs` and `ivecs` format.
 
